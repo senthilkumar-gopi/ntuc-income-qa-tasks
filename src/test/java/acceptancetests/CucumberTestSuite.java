@@ -14,7 +14,7 @@ import static io.cucumber.junit.CucumberOptions.SnippetType.CAMELCASE;
 		snippets = CAMELCASE,
         glue = "stepdefinitions",
         monochrome = true,
-        tags="@TC_02"
+        tags="@regression"
 )
 public class CucumberTestSuite {}
 

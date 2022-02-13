@@ -45,12 +45,7 @@ Serenity config – Contains url for different environments like Dev, INT, Stagi
 =====================
 Test Execution Steps:
 =====================
-1. src/test/java -> acceptancetests -> CucumberTestSuite.java
-Right click on the file and run as Junit Test
-
-(OR)
-
-2. Right click on the pom.xml and run as Maven verify
+Go to terminal and run mvn clean verify -Dgituser="mojombo" -Dgitrepo="god"
 
 =========
 Reports :
