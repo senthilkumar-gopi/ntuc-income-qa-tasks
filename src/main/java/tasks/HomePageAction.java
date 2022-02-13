@@ -22,30 +22,31 @@ public class HomePageAction {
 	private static Logger logger = LoggerFactory.getLogger(HomePageAction.class);
 
 	public static Performable launchApplication() {
-		String user = "mojombo";
-		String repo = "god";
-		return Task.where("Opens the application", Open.browserOn().the(HomePage.class),
-				Open.url(HomePageSteps.url+"/"+user+"/"+repo));
+//		String user = "mojombo";
+//		String repo = "god";
+		return Task.where("Opens the application", //Open.browserOn().the(HomePage.class),
+				Open.url(HomePageSteps.url+"/"+HomePageSteps.gitUser+"/"+HomePageSteps.gitRepo));
 	}
 	
 	public static Performable verifyStars(Actor actor) {
 		String title = BrowseTheWeb.as(actor).getDriver().getTitle();
-		String repo = "god";
+//		String repo = "god";
 		String expectedStars = String.valueOf(getStarsInAPI(actor));
 		return Task.where("Verify Stars in UI with API",
-				Ensure.that(title).contains(repo),
+				Ensure.that(title).contains(HomePageSteps.gitRepo),
 				WaitUntil.the(HomePage.SPAN_STARS, WebElementStateMatchers.isVisible()),
-				Ensure.that(UIHelper.getElementAttribute(actor, HomePage.SPAN_STARS, "title").replace(",","")).isEqualTo(expectedStars));
+				Ensure.that(UIHelper.getElementAttribute(actor, HomePage.SPAN_STARS, "title").replace(",","")).isEqualTo(expectedStars)
+		);
 	}
 
 	public static int getStarsInAPI(Actor actor) {
-		String repo = "god";
+//		String repo = "god";
 		Integer stars = 0;
 		List<String> lstRepositories = SerenityRest.lastResponse().jsonPath().getList("name");
 		List<Integer> lstStars = SerenityRest.lastResponse().jsonPath().getList("watchers");
 		for(int i=0;i<lstRepositories.size();i++) {
 			String name = lstRepositories.get(i);
-			if(name.equalsIgnoreCase(repo)) {
+			if(name.equalsIgnoreCase(HomePageSteps.gitRepo)) {
 				stars = lstStars.get(i);
 				logger.info("Stars = " + lstStars.get(i));
 				break;

@@ -28,6 +28,8 @@ public class HomePageSteps {
     
 	private EnvironmentVariables environmentVariables;
 	public static String url;
+	public static String gitUser;
+	public static String gitRepo;
 	@Managed
 	WebDriver browser;
     
@@ -38,6 +40,8 @@ public class HomePageSteps {
 		OnStage.setTheStage(OnlineCast.whereEveryoneCan(CallAnApi.at(webserviceBaseUrl)));
 		url = EnvironmentSpecificConfiguration.from(environmentVariables)
 				.getProperty("webdriver.base.url");
+		gitUser = System.getProperty("gituser");
+		gitRepo = System.getProperty("gitrepo");
 	}
 	
     @After
@@ -54,14 +58,14 @@ public class HomePageSteps {
 
 	@When("{actor} get the Github User")
 	public void actorGetsUser(Actor actor) {
-		String user = "mojombo";
-		ActionsApi.get(actor, ConstantsApi.GET_USER_ENDPOINT+"/"+user);
+//		String user = "mojombo";
+		ActionsApi.get(actor, ConstantsApi.GET_USER_ENDPOINT+"/"+gitUser);
 	}
 
 	@When("{actor} get all repository of the Github User")
 	public void actorGetsUserRepositories(Actor actor) {
-		String user = "mojombo";
-		ActionsApi.get(actor, ConstantsApi.GET_USER_ENDPOINT+"/"+user+"/repos");
+//		String user = "mojombo";
+		ActionsApi.get(actor, ConstantsApi.GET_USER_ENDPOINT+"/"+gitUser+"/repos");
 	}
 	
 	@Then("{actor} validates the Username, Name, Created on for the Github User")
@@ -93,11 +97,11 @@ public class HomePageSteps {
 		List<String> lstRepositories = SerenityRest.lastResponse().jsonPath().getList("name");
 		List<Integer> lstStars = SerenityRest.lastResponse().jsonPath().getList("watchers");
 		for(int i=0;i<lstRepositories.size();i++) {
-			String name = lstRepositories.get(i);
-			logger.info("Repository "+(i+1)+" = " + name);
+			String repo = lstRepositories.get(i);
+			logger.info("Repository "+(i+1)+" = " + repo);
 			logger.info("   Stars = " +  lstStars.get(i));
-			String user = "mojombo";
-			ActionsApi.get(actor, ConstantsApi.GET_REPOS_ENDPOINT+"/"+user+"/"+name+"/releases");
+//			String user = "mojombo";
+			ActionsApi.get(actor, ConstantsApi.GET_REPOS_ENDPOINT+"/"+gitUser+"/"+repo+"/releases");
 			List<String> lstReleases = SerenityRest.lastResponse().jsonPath().get();
 			logger.info("   Releases = " +  lstReleases.size());
 		}
